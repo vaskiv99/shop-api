@@ -13,50 +13,54 @@ namespace ShopService.Web.Helpers
     public class GlobalExceptionFilter : IExceptionFilter
     {
         private readonly ILogger _logger;
-        private HttpStatusCode _statusCode = HttpStatusCode.OK;
         private readonly IHostingEnvironment _environment;
+        private HttpStatusCode _statusCode = HttpStatusCode.OK;
 
-        public GlobalExceptionFilter(ILogger<GlobalExceptionFilter> logger, IHostingEnvironment environment)
+        public GlobalExceptionFilter(
+            IHostingEnvironment environment,
+            ILoggerFactory loggerFactory)
         {
-            _logger = logger;
+            if (loggerFactory == null)
+            {
+                throw new ArgumentNullException(nameof(loggerFactory));
+            }
+
+            _logger = loggerFactory.CreateLogger(GetType());
+
             _environment = environment;
         }
 
         public void OnException(ExceptionContext context)
         {
             PrepareResponseForException(out var message, context.Exception);
+            context.ExceptionHandled = true;
 
             context.Result = new ObjectResult(message)
             {
-                StatusCode = (int)_statusCode
+                StatusCode = (int) _statusCode
             };
-
-            context.ExceptionHandled = true;
         }
 
         private void PrepareResponseForException(out Message message, Exception exception)
         {
-            var data = _environment.IsDevelopment() || _environment.IsStaging() ? exception : null;
+            object errorData = _environment.IsDevelopment() || _environment.IsStaging() ? exception : null;
 
-            if (exception is InvalidOperationException)
+            if (exception is DomainException domainEx)
             {
-                var error = new Error(ErrorType.InvalidOperation, exception.Message, data);
+                var error = new Error(domainEx.ErrorType, domainEx.Source, domainEx.ErrorDescription,
+                    domainEx.ErrorData);
+
                 message = new Message(error);
-                _statusCode = HttpStatusCode.InternalServerError;
-                _logger.LogError(exception, exception.Message);
-            }
-            else if (exception is DomainException domainEx)
-            {
-                var error = new Error(domainEx.ErrorType, domainEx.ErrorDescription, data);
-                message = new Message(error);
+
                 if (domainEx.StatusCode.HasValue) _statusCode = domainEx.StatusCode.Value;
-                _logger.LogWarning(exception, exception.Message);
+                _logger.LogWarning(exception, nameof(GlobalExceptionFilter));
             }
             else
             {
-                _logger.LogError(exception, exception.Message);
+                var error = new Error(ErrorType.UnknownError, "unknown error", errorData);
                 _statusCode = HttpStatusCode.InternalServerError;
-                message = new Message(new Error(ErrorType.UnknownError, "unknown error", data));
+                message = new Message(error);
+                _logger.LogError(exception, nameof(GlobalExceptionFilter));
             }
         }
     }

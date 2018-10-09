@@ -11,7 +11,6 @@ namespace ShopService.Web.Extensions
         {
             services.AddScoped<ShopContext>();
             services.AddScoped<BasketRepository>();
-            services.AddScoped<CategoryRepository>();
             services.AddScoped<GoodsCategoryRepository>();
             services.AddScoped<GoodsRepository>();
             services.AddScoped<AccountCommandHandler>();
@@ -21,6 +20,7 @@ namespace ShopService.Web.Extensions
             services.AddScoped<CategoryQueryHandler>();
             services.AddScoped<GoodsCommandHandler>();
             services.AddScoped<GoodsQueryHandlers>();
+            services.AddScoped<CategoryRepository>();
         }
     }
 }

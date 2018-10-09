@@ -45,7 +45,7 @@ namespace ShopService.Web.Controllers
             return JsonResult(result);
         }
 
-        [HttpDelete("id")]
+        [HttpDelete("{id}")]
         [ValidateModel]
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(typeof(bool), 200)]
@@ -60,9 +60,9 @@ namespace ShopService.Web.Controllers
 
         #region queries
 
-        [HttpGet("id")]
+        [HttpGet("{id}")]
         [ValidateModel]
-        [ProducesResponseType(typeof(CategoryResponse), 200)]
+        [ProducesResponseType(typeof(CategoryWithGoodsResponse), 200)]
         public async Task<IActionResult> GetCategory([FromRoute] long id)
         {
             var result = await _mediator.Send(new GetCategoryById { Id = id });

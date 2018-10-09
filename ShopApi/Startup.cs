@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
 using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -6,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ShopService.Data.Repositories.Shop;
 using ShopService.Services.Handlers;
 using ShopService.Services.Validators;
 using ShopService.Web.Extensions;
@@ -16,8 +19,11 @@ namespace ShopService.Web
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly IHostingEnvironment _environment;
+
+        public Startup(IConfiguration configuration,IHostingEnvironment environment)
         {
+            _environment = environment;
             Configuration = configuration;
         }
 
@@ -25,12 +31,13 @@ namespace ShopService.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMediatR(typeof(AccountCommandHandler).Assembly);
-            services.AddMvc(options => { options.Filters.Add(typeof(GlobalExceptionFilter)); }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+            services.AddMvc(options => { options.Filters.Add(typeof(GlobalExceptionFilter)); })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RegisterCommandValidator>());
             services.AddDbContext(Configuration);
-            services.AddIdentityServerConfig(Configuration);
+            services.AddIdentityServerConfig(Configuration,_environment);
             services.AddDiExtension();
+            services.AddMediatR(typeof(AccountCommandHandler).GetTypeInfo().Assembly);
 
             services.AddSwaggerGen(c =>
             {
@@ -54,6 +61,7 @@ namespace ShopService.Web
                 });
                 c.AddSecurityRequirement(security);
             });
+
             services.AddCors(c => c.AddPolicy("Policy", builder =>
             {
                 builder.AllowAnyOrigin()

@@ -11,7 +11,7 @@ namespace ShopService.Data.Repositories.Shop
 {
     public class CategoryRepository : GeneralRepository<Category, long>
     {
-        public CategoryRepository(ShopContext context, DbSet<Category> dataSet) : base(context, dataSet)
+        public CategoryRepository(ShopContext context) : base(context, context.Categories)
         {
         }
 

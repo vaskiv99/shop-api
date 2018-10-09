@@ -1,0 +1,21 @@
+version: "3.3"
+services:
+    web:
+        image: shopapi
+        build: .
+        ports:
+            - "8080:80"
+        depends_on:
+            - postgres
+    postgres:
+        image: postgres:10-alpine
+        volumes:
+          - postgres:/var/lib/postgresql/data
+        environment:
+          POSTGRES_USER: "postgres"
+          POSTGRES_PASSWORD: "postgres"
+          POSTGRES_NAME: "shopService"
+        ports:
+          - 5432
+volumes:
+    postgres:

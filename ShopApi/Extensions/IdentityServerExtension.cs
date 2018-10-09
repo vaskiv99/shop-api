@@ -1,5 +1,7 @@
-﻿using IdentityServer4.Services;
+﻿using System;
+using IdentityServer4.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,8 +13,10 @@ namespace ShopService.Web.Extensions
 {
     public static class IdentityServerExtension
     {
-        public static void AddIdentityServerConfig(this IServiceCollection services, IConfiguration configuration)
+        public static void AddIdentityServerConfig(this IServiceCollection services, IConfiguration configuration, IHostingEnvironment env)
         {
+            //var authority = env.IsDevelopment() ? configuration["ID4:Authority"] : Environment.GetEnvironmentVariable("IDENTITY_SERVER_AUTHORITY");
+
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<ShopContext>()
                 .AddDefaultTokenProviders();
@@ -43,6 +47,7 @@ namespace ShopService.Web.Extensions
                 .AddJwtBearer(options =>
                 {
                     options.Authority = configuration["ID4:Authority"];
+                    //options.Authority = "http://shopapi_web_1:8080/";
                     options.Audience = configuration["ID4:Audience"];
                     options.RequireHttpsMetadata = false;
                 });

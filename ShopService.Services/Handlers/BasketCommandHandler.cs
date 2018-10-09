@@ -16,11 +16,13 @@ namespace ShopService.Services.Handlers
     {
         private readonly BasketRepository _basketRepository;
         private readonly ShopContext _context;
+        private readonly GoodsRepository _goodsRepository;
 
-        public BasketCommandHandler(BasketRepository basketRepository, ShopContext context)
+        public BasketCommandHandler(BasketRepository basketRepository, ShopContext context, GoodsRepository goodsRepository)
         {
             _basketRepository = basketRepository;
             _context = context;
+            _goodsRepository = goodsRepository;
         }
 
         public async Task<bool> Handle(AddItemToBasket request, CancellationToken cancellationToken)
@@ -31,6 +33,9 @@ namespace ShopService.Services.Handlers
 
             if (basket == null)
             {
+                if(!(await _goodsRepository.ExistAsync(x => x.Id == request.GoodsId)).Data)
+                    throw new DomainException(ErrorType.GoodsDoesNotExist);
+
                 var item = request.ToModel();
                 _basketRepository.Create(item);
             }
@@ -49,6 +54,9 @@ namespace ShopService.Services.Handlers
         {
             var basket =
                 (await _basketRepository.FindAsync(x => x.GoodsId == request.GoodsId && x.UserId == request.UserId)).Data;
+
+            if(basket == null)
+                throw new DomainException(ErrorType.BasketDoesNotExist);
 
             if (basket.Count < request.Count)
                 throw new DomainException(ErrorType.BasketItemCountLessThenNeed);

@@ -1,12 +1,18 @@
-﻿using System.Security.Claims;
+﻿using System;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using IdentityModel.Client;
 using MediatR;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
+using ShopService.Common.Enums;
+using ShopService.Common.Exceptions;
 using ShopService.Common.Models;
+using ShopService.Data.Db;
 using ShopService.Services.Adapters;
 using ShopService.Services.Commands;
 using ShopService.Services.Responses;
@@ -18,19 +24,31 @@ namespace ShopService.Services.Handlers
     {
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly ShopContext _context;
         private readonly string _url;
 
         public AccountCommandHandler(UserManager<User> userManager,
             RoleManager<IdentityRole> roleManager,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            ShopContext context,
+            IHostingEnvironment env)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _context = context;
+            //_url = env.IsDevelopment() ? configuration["ID4:Authority"] : Environment.GetEnvironmentVariable("IDENTITY_SERVER_AUTHORITY");
             _url = configuration["ID4:Authority"];
         }
 
         public async Task<UserResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
+            var isExist = await _context.Users.AnyAsync(x => x.Email == request.Email || x.UserName == request.UserName,
+                    cancellationToken: cancellationToken)
+                .ConfigureAwait(false);
+
+            if(isExist)
+                throw new DomainException(ErrorType.DuplicatedEmailOrUserName);
+
             var user = request.ToModel();
 
             var result = await _userManager.CreateAsync(user, request.Password).ConfigureAwait(false);

@@ -30,7 +30,12 @@ namespace ShopService.Common.Enums
         [Description("Basket item count less than need")]
         BasketItemCountLessThenNeed = 120,
 
-        
+        [Description("Duplicated email or user name")]
+        DuplicatedEmailOrUserName = 125,
+
+        [Description("Category With This Name Already Exist")]
+        CategoryWithThisNameAlreadyExist = 130
+
         #endregion
     }
 }
