@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using ShopService.IdentityServer4;
 using ShopService.Services.Commands;
 using ShopService.Services.Responses;
 using ShopService.Web.Helpers;
@@ -25,7 +26,7 @@ namespace ShopService.Web.Controllers
         [ProducesResponseType(typeof(UserResponse), 200)]
         public async Task<IActionResult> RegisterAdmin([FromBody] RegisterCommand command)
         {
-            command.Role = "Admin";
+            command.Role = ServerRoles.Admin;
             var result = await _mediator.Send(command).ConfigureAwait(false);
 
             return JsonResult(result);
@@ -36,7 +37,7 @@ namespace ShopService.Web.Controllers
         [ProducesResponseType(typeof(UserResponse), 200)]
         public async Task<IActionResult> RegisterCustomer([FromBody] RegisterCommand command)
         {
-            command.Role = "Customer";
+            command.Role = ServerRoles.Customer;
             var result = await _mediator.Send(command).ConfigureAwait(false);
 
             return JsonResult(result);

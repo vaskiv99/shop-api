@@ -15,5 +15,5 @@ WORKDIR /app
  
 COPY --from=build-env /app/ShopApi/out .
 
-EXPOSE 5000/tcp
+EXPOSE 80/tcp
 ENTRYPOINT ["dotnet", "ShopService.Web.dll"]

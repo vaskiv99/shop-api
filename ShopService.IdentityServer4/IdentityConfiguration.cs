@@ -35,7 +35,8 @@ namespace ShopService.IdentityServer4
                     ApiSecrets = new List<Secret> {new Secret("ShopApiSecret".Sha256())},
                     Scopes = new List<Scope> {
                         new Scope("ShopApi.read"),
-                        new Scope("ShopApi.write")
+                        new Scope("ShopApi.write"),
+                        new Scope("offline_access")
                     }
                 }
             };
@@ -53,7 +54,8 @@ namespace ShopService.IdentityServer4
                     {
                         new Secret("ShopApiSecret".Sha256())
                     },
-                    AllowedScopes = new List<string> { "ShopApi.read" }
+                    AllowedScopes = new List<string> { "ShopApi.read","offline_access" },
+                    AllowOfflineAccess = true
                 }
             };
         }

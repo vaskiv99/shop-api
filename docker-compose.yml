@@ -1,7 +1,9 @@
 version: "3.3"
+
 services:
     web:
         image: shopapi
+        container_name: identityserver_shopapi
         build: .
         ports:
             - "8080:80"

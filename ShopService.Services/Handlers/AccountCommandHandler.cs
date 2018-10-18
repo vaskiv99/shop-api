@@ -76,7 +76,7 @@ namespace ShopService.Services.Handlers
         {
             var disco = await DiscoveryClient.GetAsync(_url);
             var tokenClient = new TokenClient(disco.TokenEndpoint, "shopClient", "ShopApiSecret");
-            var tokenResponse = await tokenClient.RequestResourceOwnerPasswordAsync(request.UserName, request.Password, "ShopApi.read",
+            var tokenResponse = await tokenClient.RequestResourceOwnerPasswordAsync(request.UserName, request.Password, "offline_access",
                 cancellationToken: cancellationToken);
 
             return tokenResponse.Json;

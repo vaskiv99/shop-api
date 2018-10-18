@@ -31,11 +31,11 @@ namespace ShopService.Services.Handlers
                 .FirstOrDefaultAsync(x => x.GoodsId == request.GoodsId && x.UserId == request.UserId, cancellationToken: cancellationToken)
                 .ConfigureAwait(false);
 
+            if (!(await _goodsRepository.ExistAsync(x => x.Id == request.GoodsId)).Data)
+                throw new DomainException(ErrorType.GoodsDoesNotExist);
+
             if (basket == null)
             {
-                if(!(await _goodsRepository.ExistAsync(x => x.Id == request.GoodsId)).Data)
-                    throw new DomainException(ErrorType.GoodsDoesNotExist);
-
                 var item = request.ToModel();
                 _basketRepository.Create(item);
             }
