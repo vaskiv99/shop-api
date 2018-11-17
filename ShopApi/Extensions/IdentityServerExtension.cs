@@ -44,7 +44,7 @@ namespace ShopService.Web.Extensions
                 })
                 .AddJwtBearer(options =>
                 {
-                    options.Authority = configuration["ID4:Authority"];
+                    options.Authority = configuration["ID4:Authority"];                  
                     options.Audience = configuration["ID4:Audience"];
                     options.RequireHttpsMetadata = false;
                 });

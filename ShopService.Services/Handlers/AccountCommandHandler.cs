@@ -30,13 +30,11 @@ namespace ShopService.Services.Handlers
         public AccountCommandHandler(UserManager<User> userManager,
             RoleManager<IdentityRole> roleManager,
             IConfiguration configuration,
-            ShopContext context,
-            IHostingEnvironment env)
+            ShopContext context)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _context = context;
-            //_url = env.IsDevelopment() ? configuration["ID4:Authority"] : Environment.GetEnvironmentVariable("IDENTITY_SERVER_AUTHORITY");
             _url = configuration["ID4:Authority"];
         }
 
@@ -46,7 +44,7 @@ namespace ShopService.Services.Handlers
                     cancellationToken: cancellationToken)
                 .ConfigureAwait(false);
 
-            if(isExist)
+            if (isExist)
                 throw new DomainException(ErrorType.DuplicatedEmailOrUserName);
 
             var user = request.ToModel();
@@ -76,7 +74,7 @@ namespace ShopService.Services.Handlers
         {
             var disco = await DiscoveryClient.GetAsync(_url);
             var tokenClient = new TokenClient(disco.TokenEndpoint, "shopClient", "ShopApiSecret");
-            var tokenResponse = await tokenClient.RequestResourceOwnerPasswordAsync(request.UserName, request.Password, "offline_access",
+            var tokenResponse = await tokenClient.RequestResourceOwnerPasswordAsync(request.UserName, request.Password, "ShopApi.read",
                 cancellationToken: cancellationToken);
 
             return tokenResponse.Json;

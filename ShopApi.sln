@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopService.Services", "Sho
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopService.Common", "ShopService.Common\ShopService.Common.csproj", "{8171052E-E9C6-448B-A3A3-D0473C2EF96E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopService.IdentityServer4", "ShopService.IdentityServer4\ShopService.IdentityServer4.csproj", "{49F46B05-A716-4D2F-A815-8F61099C1A76}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopService.IdentityServer4", "ShopService.IdentityServer4\ShopService.IdentityServer4.csproj", "{49F46B05-A716-4D2F-A815-8F61099C1A76}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopService.Tests", "ShopService.Tests\ShopService.Tests.csproj", "{672FDA99-2F6E-4AA0-ABFF-5D78622C6B1A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{49F46B05-A716-4D2F-A815-8F61099C1A76}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49F46B05-A716-4D2F-A815-8F61099C1A76}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{49F46B05-A716-4D2F-A815-8F61099C1A76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{672FDA99-2F6E-4AA0-ABFF-5D78622C6B1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{672FDA99-2F6E-4AA0-ABFF-5D78622C6B1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{672FDA99-2F6E-4AA0-ABFF-5D78622C6B1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{672FDA99-2F6E-4AA0-ABFF-5D78622C6B1A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

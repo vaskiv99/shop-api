@@ -4,6 +4,8 @@ services:
     web:
         image: shopapi
         container_name: identityserver_shopapi
+        environment:
+            IDENTITY_SERVER_URL: "http://web:80"
         build: .
         ports:
             - "8080:80"
