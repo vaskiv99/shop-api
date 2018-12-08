@@ -6,6 +6,9 @@ if [ "$TRAVIS_BRANCH" = "master" ]; then
 else
     TAG="$TRAVIS_BRANCH"
 
+REPONAME="$TRAVIS_REPO_SLUG"
+REPONAME="${REPONAME,,}"
+
 fi
-docker build -t $TRAVIS_REPO_SLUG | tr '[:upper:]' '[:lower:]':$TAG .
-docker push $TRAVIS_REPO_SLUG | tr '[:upper:]' '[:lower:]'
+docker build -t $REPONAME:$TAG .
+docker push $REPONAME
