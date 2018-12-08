@@ -5,8 +5,8 @@ if [ "$TRAVIS_BRANCH" = "master" ]; then
     TAG="latest"
 else
     TAG="$TRAVIS_BRANCH"
-REPO=$TRAVIS_REPO_SLUG
-REPO=${REPO,,}
+REPO="$TRAVIS_REPO_SLUG"
+REPO="${REPO,,}"
 echo REPO
 fi
 docker build -t $REPO:$TAG .
