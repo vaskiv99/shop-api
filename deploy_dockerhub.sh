@@ -7,6 +7,6 @@ else
     TAG="$TRAVIS_BRANCH"
 
 fi
-REPONAME="shop_api"
+REPONAME="vaskiv99/shop_api"
 docker build -t $REPONAME:$TAG .
 docker push $REPONAME:$TAG
