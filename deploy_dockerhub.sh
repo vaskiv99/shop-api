@@ -7,7 +7,6 @@ else
     TAG="$TRAVIS_BRANCH"
 
 fi
-REPONAME="$TRAVIS_REPO_SLUG"
-REPONAME="${REPONAME,,}"
+REPONAME="shop_api"
 docker build -t $REPONAME:$TAG .
 docker push $REPONAME
