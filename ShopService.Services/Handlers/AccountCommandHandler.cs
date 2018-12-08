@@ -4,7 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using IdentityModel.Client;
 using MediatR;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
