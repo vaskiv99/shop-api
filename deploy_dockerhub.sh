@@ -6,6 +6,7 @@ if [ "$TRAVIS_BRANCH" = "master" ]; then
 else
     TAG="$TRAVIS_BRANCH"
 REPO="$TRAVIS_REPO_SLUG"
+echo REPO
 REPO="${REPO,,}"
 echo REPO
 fi
