@@ -9,4 +9,4 @@ else
 fi
 REPONAME="shop_api"
 docker build -t $REPONAME:$TAG .
-docker push $REPONAME
+docker push $REPONAME:$TAG
