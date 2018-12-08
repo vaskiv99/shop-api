@@ -8,3 +8,5 @@ before_script:
   - dotnet restore
 script:  
   - dotnet test ./ShopService.Tests -c Release -f netcoreapp2.1
+after_success:
+  - sh ./deploy_dockerhub.sh
