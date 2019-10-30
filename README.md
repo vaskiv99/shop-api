@@ -1,5 +1,5 @@
 # ShopApi
-
+ Simple Web API, implemented usage CQRS principle with MediatR.
 # Technologies:
 
  - ASP .NET Core 2.1
